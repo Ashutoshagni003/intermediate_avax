@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CONNECTION TO METAMASK</title>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"
+    ></script>
+    <style>
+      html {
+        background-color: #a683e3;
+
+        min-height: 1000px;
+        font-family: "helvetica neue";
+      }
+      body {
+        font-size: 33px;
+        text-align: center;
+      }
+      button {
+        font-size: 33px;
+
+        border-radius: 10px;
+      }
+      button:hover {
+        background-color: #ffd6ff;
+      }
+      .show {
+        height:fit-content;
+        width: fit-content;
+        margin: 100px 500px;
+        padding: 20px;
+        background-color: #edede9;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="show">
+      <button onclick="connectMetamask()">Connect to metamask</button> <br />
+      <p id="accountArea"></p>
+      <button onclick="connectContract()">Contract Connected</button> <br />
+      <p id="contractArea"></p>
+
+      <button onclick="readNumber()">Get the Balance</button> <br />
+      <p id="numberArea"></p>
+      <button onclick="readMessage()">My view</button> <br />
+      <p id="messageArea"></p>
+    </div>
+
+    <script>
+      let account;
+      const connectMetamask = async () => {
+        if (window.ethereum !== "undefined") {
+          const accounts = await ethereum.request({
+            method: "eth_requestAccounts",
+          });
+          account = accounts[0];
+          document.getElementById("accountArea").innerHTML = account;
+        }
+      };
+
+
+      const connectContract = async () => {
+        const ABI = [
+          {
+            inputs: [],
+            name: "message",
+            outputs: [
+              {
+                internalType: "string",
+                name: "",
+                type: "string",
+              },
+            ],
+            stateMutability: "view",
+            type: "function",
+          },
+          {
+            inputs: [],
+            name: "Message",
+            outputs: [
+              {
+                internalType: "string",
+                name: "",
+                type: "string",
+              },
+            ],
+            stateMutability: "pure",
+            type: "function",
+          },
+          {
+            inputs: [],
+            name: "number",
+            outputs: [
+              {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+              },
+            ],
+            stateMutability: "view",
+            type: "function",
+          },
+          {
+            inputs: [],
+            name: "Number",
+            outputs: [
+              {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+              },
+            ],
+            stateMutability: "pure",
+            type: "function",
+          },
+        ];
+        const Address = "0x456C43b02a4C9EFbc58F8269eBD36f85F0F48e12";
+        window.web3 = await new Web3(window.ethereum);
+        window.contract = await new window.web3.eth.Contract(ABI, Address);
+        document.getElementById("contractArea").innerHTML =
+          "connected to smart contract";
+      };
+
+      const readNumber = async () => {
+        const data = await window.contract.methods.Number().call();
+        document.getElementById(
+          "numberArea"
+        ).innerHTML = `Contract Balance: ${data}`;
+      };
+      const readMessage = async () => {
+        const message = await window.contract.methods.Message().call();
+        document.getElementById("messageArea").innerHTML = message;
+      };
+    </script>
+  </body>
+</html>
