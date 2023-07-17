@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CONNECTION TO METAMASK</title>
+    <title>METAMASK SMART CONTRACT</title>
     <script
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"
@@ -11,7 +11,7 @@
         background-color: #a683e3;
 
         min-height: 1000px;
-        font-family: "helvetica neue";
+        
       }
       body {
         font-size: 33px;
@@ -39,12 +39,12 @@
     <div class="show">
       <button onclick="connectMetamask()">Connect to metamask</button> <br />
       <p id="accountArea"></p>
-      <button onclick="connectContract()">Contract Connected</button> <br />
+      <button onclick="connectContract()">Connect contract</button> <br />
       <p id="contractArea"></p>
 
-      <button onclick="readNumber()">Get the Balance</button> <br />
+      <button onclick="read()">Get the Balance</button> <br />
       <p id="numberArea"></p>
-      <button onclick="readMessage()">My view</button> <br />
+      <button onclick="yourViews()">My view</button> <br />
       <p id="messageArea"></p>
     </div>
 
@@ -123,14 +123,14 @@
           "connected to smart contract";
       };
 
-      const readNumber = async () => {
-        const data = await window.contract.methods.Number().call();
+      const read = async () => {
+        const data = await window.contract.methods.Balance().call();
         document.getElementById(
           "numberArea"
         ).innerHTML = `Contract Balance: ${data}`;
       };
-      const readMessage = async () => {
-        const message = await window.contract.methods.Message().call();
+      const yourViews = async () => {
+        const message = await window.contract.methods.View().call();
         document.getElementById("messageArea").innerHTML = message;
       };
     </script>
